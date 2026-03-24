@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dep
+spec:
+  replicas: 2
+  selector:
+    matchLabel:
+      app: red
+  template:
+    metadata:
+      labels:
+        app: red
+spec:
+  containers:
+    - name: cicd
+      image: varsha0411/chittiimg:v1
+      ports:
+    - containerPort: 8080
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ser
+spec:
+  type: LoadBalancer
+  selector:
+    app: red
+  ports:
+    - port: 8080
+      targetPort: 8080
