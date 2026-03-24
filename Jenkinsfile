@@ -6,6 +6,15 @@ pipeline{
     stage('git checkout'){
       steps{
         checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: 'dockerhub-creds', url: 'https://github.com/varsha-0411/task6.git']])
+        post {
+                success {
+                    emailext(
+                        subject: "checkout Success",
+                        body: "checkout completed",
+                        to: "varshachowdary411@gmail.com"
+                    )
+                }
+            }
       }
     }
     stage('Build WAR file'){
