@@ -1,38 +1,50 @@
-pipeline{
-  agent any
-  tools{
-    maven 'mymav'}
-  stages{
-    stage('git checkout'){
-      steps{
-        checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: 'dockerhub-creds', url: 'https://github.com/varsha-0411/task6.git']])
-        post {
+pipeline {
+    agent any
+
+    tools {
+        maven 'mymav'
+    }
+
+    stages {
+
+        stage('Git Checkout') {
+            steps {
+                checkout scmGit(
+                    branches: [[name: '*/main']],
+                    extensions: [],
+                    userRemoteConfigs: [[credentialsId: 'dockerhub-creds', url: 'https://github.com/varsha-0411/task6.git']]
+                )
+            }
+            post {
                 success {
                     emailext(
-                        subject: "checkout Success",
-                        body: "checkout completed",
+                        subject: "Checkout Success",
+                        body: "Checkout completed",
                         to: "varshachowdary411@gmail.com"
                     )
                 }
             }
-      }
-    }
-    stage('Build WAR file'){
-      steps{
-        sh 'mvn clean package'
-      }
-    }
-    stage('Build docker image'){
-      steps{
-        sh 'docker build -t chittiimg .'
-      }
-    }
-    stage('tag_img'){
-      steps{
-        sh 'docker tag chittiimg varsha0411/chittiimg:v1'
-      }
-    }
-   stage('Login to Docker Hub') {
+        }
+
+        stage('Build WAR file') {
+            steps {
+                sh 'mvn clean package'
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                sh 'docker build -t chittiimg .'
+            }
+        }
+
+        stage('Tag Docker Image') {
+            steps {
+                sh 'docker tag chittiimg varsha0411/chittiimg:v1'
+            }
+        }
+
+        stage('Login to Docker Hub') {
             steps {
                 withCredentials([usernamePassword(
                     credentialsId: 'docke-cred',
@@ -43,15 +55,18 @@ pipeline{
                 }
             }
         }
-    stage('docker_push'){
-      steps{
-        sh 'docker push varsha0411/chittiimg:v1'
-      }
-    }
-    stage('k8s_deployment'){
-      steps{
-        sh 'kubectl apply -f 6and7.yml'
-      }
-    }
-  }
-}
+
+        stage('Docker Push') {
+            steps {
+                sh 'docker push varsha0411/chittiimg:v1'
+            }
+        }
+
+        stage('K8s Deployment') {
+            steps {
+                sh 'kubectl apply -f 6and7.yml'
+            }
+        }
+
+    } 
+} 
