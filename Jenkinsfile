@@ -27,7 +27,7 @@ pipeline{
         sh'docker build -t chittiimg .'
       }
     }
-    stage('tag_img')
+    stage('tag_img'){
       steps{
         sh'docker tag chittiimg varsha0411/chittiimg:v1'
       }
