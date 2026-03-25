@@ -15,15 +15,7 @@ pipeline {
                     userRemoteConfigs: [[credentialsId: 'dockerhub-creds', url: 'https://github.com/JSAI9999/k8s-deployment-with-mail-alerts.git']]
                 )
             }
-            post {
-                success {
-                    emailext(
-                        subject: "Checkout Success",
-                        body: "Checkout completed",
-                        to: "varshachowdary411@gmail.com"
-                    )
-                }
-            }
+           
         }
 
         stage('Build WAR file') {
@@ -34,13 +26,14 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t chittiimg .'
+                sh 'docker build -t hotstarimg .'
             }
         }
 
         stage('Tag Docker Image') {
             steps {
-                sh 'docker tag chittiimg varsha0411/chittiimg:v1'
+                sh 'docker tag hotstarimg jsaikumar9999/repo1:hotstarimg
+'
             }
         }
 
@@ -58,7 +51,7 @@ pipeline {
 
         stage('Docker Push') {
             steps {
-                sh 'docker push varsha0411/chittiimg:v1'
+                sh 'docker push jsaikumar9999/repo1:hotstarimg'
             }
         }
 
