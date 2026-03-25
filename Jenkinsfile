@@ -12,10 +12,12 @@ pipeline {
                 checkout scmGit(
                     branches: [[name: '*/main']],
                     extensions: [],
-                    userRemoteConfigs: [[credentialsId: 'dockerhub-creds', url: 'https://github.com/JSAI9999/k8s-deployment-with-mail-alerts.git']]
+                    userRemoteConfigs: [[
+                        credentialsId: 'dockerhub-creds',
+                        url: 'https://github.com/JSAI9999/k8s-deployment-with-mail-alerts.git'
+                    ]]
                 )
             }
-           
         }
 
         stage('Build WAR file') {
@@ -26,14 +28,13 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t hotstarimg .'
+                sh 'docker build -t chittiimg .'
             }
         }
 
         stage('Tag Docker Image') {
             steps {
-                sh 'docker tag hotstarimg jsaikumar9999/repo1:hotstarimg
-'
+                sh 'docker tag chittiimg varsha011/chittiimg:v1'
             }
         }
 
@@ -51,21 +52,20 @@ pipeline {
 
         stage('Docker Push') {
             steps {
-                sh 'docker push jsaikumar9999/repo1:hotstarimg'
+                sh 'docker push varsha0411/chittiimg:v1'
             }
         }
 
         stage('K8s Deployment') {
             steps {
-              withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
-                sh '''
-                export KUBECONFIG=$KUBECONFIG
-                kubectl get nodes
-                kubectl apply -f 6and7.yml
-                '''
+                withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
+                    sh '''
+                    export KUBECONFIG=$KUBECONFIG
+                    kubectl get nodes
+                    kubectl apply -f 6and7.yml
+                    '''
+                }
+            }
         }
     }
 }
-
-    } 
-} 
