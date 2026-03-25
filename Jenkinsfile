@@ -34,7 +34,7 @@ pipeline {
 
         stage('Tag Docker Image') {
             steps {
-                sh 'docker tag chittiimg varsha0411/chittiimg:v1'
+                sh 'docker tag chittiimg jsaikumar9999/chittiimg:v1'
             }
         }
 
@@ -52,7 +52,7 @@ pipeline {
 
         stage('Docker Push') {
             steps {
-                sh 'docker push varsha0411/chittiimg:v1'
+                sh 'docker push jsaikumar9999/chittiimg:v1'
             }
         }
 
