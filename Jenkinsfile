@@ -34,7 +34,7 @@ pipeline {
 
         stage('Tag Docker Image') {
             steps {
-                sh 'docker tag chittiimg varsha011/chittiimg:v1'
+                sh 'docker tag chittiimg varsha0411/chittiimg:v1'
             }
         }
 
